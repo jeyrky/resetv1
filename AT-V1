@@ -1,183 +1,80 @@
-local
-player
-%3D
-game.Players.LocalPlayer
-local
-replicatedStorage
-%3D
-game%3AGetService%28%22ReplicatedStorage%22%29
-local
-tweenService
-%3D
-game%3AGetService%28%22TweenService%22%29
-local
-function
-SetTeam%28teamName%29
-replicatedStorage.Remotes.CommF_%3AInvokeServer%28%22SetTeam%22%2C
-teamName%29
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local tweenService = game:GetService("TweenService")
+
+local function SetTeam(teamName)
+    replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
-local
-function
-movePlayer%28destination%2C
-duration%29
-local
-humanoidRootPart
-%3D
-player.Character
-and
-player.Character%3AFindFirstChild%28%22HumanoidRootPart%22%29
-if
-humanoidRootPart
-then
-local
-tweenInfo
-%3D
-TweenInfo.new%28duration%2C
-Enum.EasingStyle.Linear%2C
-Enum.EasingDirection.Out%2C
-0%2C
-false%2C
-0%29
-local
-tweenGoal
-%3D
-%7B
-CFrame
-%3D
-destination
-%7D
-local
-tween
-%3D
-tweenService%3ACreate%28humanoidRootPart%2C
-tweenInfo%2C
-tweenGoal%29
-tween%3APlay%28%29
-tween.Completed%3AWait%28%29
-else
-warn%28%22HumanoidRootPart
-not
-found.
-Character
-may
-not
-be
-loaded.%22%29
+
+local function movePlayer(destination, duration)
+    local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidRootPart then
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
+        local tweenGoal = { CFrame = destination }
+        local tween = tweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+        tween:Play()
+        tween.Completed:Wait()
+    else
+        warn("HumanoidRootPart not found. Character may not be loaded.")
+    end
 end
+
+local startPosition = CFrame.new(-380.47927856445, 77.220390319824, 255.82550048828)
+local endPosition = CFrame.new(-474.928925, 150.898499, 312.700775, -0.0384129211, 0.0390699878, 0.998497844, 1.75728928e-07, 0.999235392, -0.0390988514, -0.999261975, -0.0015017027, -0.0383835621)
+
+local function TravelToDressrosa()
+    replicatedStorage.Remotes.CommF_:InvokeServer("TravelDressrosa")
 end
-local
-startPosition
-%3D
-CFrame.new%28-380.47927856445%2C
-77.220390319824%2C
-255.82550048828%29
-local
-endPosition
-%3D
-CFrame.new%28-474.928925%2C
-150.898499%2C
-312.700775%2C
--0.0384129211%2C
-0.0390699878%2C
-0.998497844%2C
-1.75728928e-07%2C
-0.999235392%2C
--0.0390988514%2C
--0.999261975%2C
--0.0015017027%2C
--0.0383835621%29
-local
-function
-TravelToDressrosa%28%29
-replicatedStorage.Remotes.CommF_%3AInvokeServer%28%22TravelDressrosa%22%29
+
+local function RandomAction()
+    replicatedStorage.Remotes.CommF_:InvokeServer("Cousin", "Buy")
 end
-local
-function
-RandomAction%28%29
-replicatedStorage.Remotes.CommF_%3AInvokeServer%28%22Cousin%22%2C
-%22Buy%22%29
+
+local function DropMultipleItemsFromBackpack(quantity)
+    for _, tool in ipairs(player.Backpack:GetChildren()) do
+        if tool:IsA("Tool") then
+            tool.Parent = player.Character
+            local toolInCharacter = player.Character:FindFirstChild(tool.Name)
+            if toolInCharacter then
+                toolInCharacter.Parent = game.Workspace
+            end
+        end
+    end
 end
-local
-function
-DropMultipleItemsFromBackpack%28quantity%29
-for
-_%2C
-tool
-in
-ipairs%28player.Backpack%3AGetChildren%28%29%29
-do
-if
-tool%3AIsA%28%22Tool%22%29
-then
-tool.Parent
-%3D
-player.Character
-local
-toolInCharacter
-%3D
-player.Character%3AFindFirstChild%28tool.Name%29
-if
-toolInCharacter
-then
-toolInCharacter.Parent
-%3D
-game.Workspace
+
+local function UnequipTools()
+    for _, tool in ipairs(player.Character:GetChildren()) do
+        if tool:IsA("Tool") then
+            tool.Parent = player.Backpack
+        end
+    end
 end
-end
-end
-end
-local
-function
-UnequipTools%28%29
-for
-_%2C
-tool
-in
-ipairs%28player.Character%3AGetChildren%28%29%29
-do
-if
-tool%3AIsA%28%22Tool%22%29
-then
-tool.Parent
-%3D
-player.Backpack
-end
-end
-end
-SetTeam%28%22Pirates%22%29
-wait%281%29
-TravelToDressrosa%28%29
-wait%281%29
-movePlayer%28startPosition%2C
-8%29
-game%3AGetService%28%22ReplicatedStorage%22%29%3AWaitForChild%28%22Remotes%22%29%3AWaitForChild%28%22CommF_%22%29%3AInvokeServer%28%22SetSpawnPoint%22%29
-while
-true
-do
-wait%281%29
-local
-success%2C
-errorMessage
-%3D
-pcall%28function%28%29
-movePlayer%28endPosition%2C
-1%29
-end%29
-wait%281%29
-RandomAction%28%29
-wait%281%29
-UnequipTools%28%29
-wait%281%29
-DropMultipleItemsFromBackpack%28200%29
-wait%281%29
-if
-not
-success
-then
-warn%28%22Error
-during
-movePlayer%3A%22%2C
-errorMessage%29
-end
-wait%281%29
+
+SetTeam("Pirates")
+wait(1)
+TravelToDressrosa()
+wait(1)
+
+movePlayer(startPosition, 8)
+
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
+
+while true do
+    wait(1)
+    local success, errorMessage = pcall(function()
+        movePlayer(endPosition, 1)
+    end)
+    wait(1)
+    RandomAction()
+    wait(1)
+    UnequipTools()
+    wait(1)
+    DropMultipleItemsFromBackpack(200)
+    wait(1)
+
+    if not success then
+        warn("Error during movePlayer:", errorMessage)
+    end
+
+    wait(1)
 end
