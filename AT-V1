@@ -2,6 +2,28 @@ local player = game.Players.LocalPlayer
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
 
+local function TeleportToSpawn()
+    local success, spawnLocation = pcall(function()
+        return replicatedStorage.Remotes.CommF_:InvokeServer("GetSpawnLocation")
+    end)
+
+    if success and spawnLocation then
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+
+        if humanoid then
+            humanoid:Move(Vector3.new(0, 1000000, 0)) -- Di chuyển người chơi lên cao để tránh va chạm
+            wait(0.5)  -- Chờ một khoảng thời gian để hệ thống respawn.
+
+            -- Đặt vị trí của người chơi đến vị trí spawn
+            player.Character:SetPrimaryPartCFrame(CFrame.new(spawnLocation.Position))
+        else
+            warn("Humanoid not found. Character may not be loaded.")
+        end
+    else
+        warn("Failed to get spawn location from server.")
+    end
+end
+
 local function SetTeam(teamName)
     replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
@@ -50,19 +72,19 @@ local function UnequipTools()
     end
 end
 
+-- Đặt team trước
 SetTeam("Pirates")
 wait(2)
 TravelToDressrosa()
 wait(2)
 
-local argsTeleportSpawn = {
-    [1] = "TeleportToSpawn"
-}
-rs.Remotes.CommF_:InvokeServer(unpack(argsTeleportSpawn))
+-- Gọi hàm TeleportToSpawn sau khi đặt đội và đi đến Dressrosa
+TeleportToSpawn()
 
-wait(6)
+-- Di chuyển đến vị trí khởi đầu và thực hiện các hành động khác
 movePlayer(startPosition, 8)
 
+-- Gọi hàm setSpawnPoint để cập nhật vị trí spawn mới
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
 
 while true do
