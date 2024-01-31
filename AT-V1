@@ -68,9 +68,9 @@ local args = {
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
 
 SetTeam("Pirates")
-wait(1)
+wait(3)
 TeleportToSpawn()
-wait(6)
+wait(10)
 TravelToDressrosa()
 wait(2)
 movePlayer(startPosition, 10)
