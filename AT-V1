@@ -6,6 +6,10 @@ local function SetTeam(teamName)
     replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
 
+local function TeleportToSpawn()
+    replicatedStorage.Remotes.CommF_:InvokeServer("TeleportToSpawn")
+end
+
 local function movePlayer(destination, duration)
     local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     if humanoidRootPart then
