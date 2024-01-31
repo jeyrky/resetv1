@@ -59,7 +59,7 @@ local args = {
 }
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
-wait(6)
+wait(7)
 
 movePlayer(startPosition, 10)
 
