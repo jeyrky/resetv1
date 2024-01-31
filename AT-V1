@@ -61,16 +61,15 @@ local function UnequipTools()
         end
     end
 end
+
+SetTeam("Pirates")
+wait(2)
 local args = {
     [1] = "TeleportToSpawn"
 }
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
-
-SetTeam("Pirates")
-wait(3)
-TeleportToSpawn()
-wait(10)
+wait(6)
 TravelToDressrosa()
 wait(2)
 movePlayer(startPosition, 10)
