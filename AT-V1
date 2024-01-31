@@ -62,10 +62,10 @@ game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF
 SetTeam("Pirates")
 wait(1)
 TravelToDressrosa()
-wait(1)
+wait(2)
 TeleportToSpawn()
-wait(1)
-movePlayer(startPosition, 10)
+wait(5)
+movePlayer(startPosition, 8)
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
 
