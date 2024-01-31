@@ -70,7 +70,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF
 SetTeam("Pirates")
 wait(1)
 TeleportToSpawn()
-wait(5)
+wait(6)
 TravelToDressrosa()
 wait(2)
 movePlayer(startPosition, 10)
