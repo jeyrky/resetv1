@@ -65,13 +65,11 @@ end
 -- Đặt team trước
 SetTeam("Pirates")
 wait(2)
-
--- Sau đó mới gọi TeleportToSpawn
-TeleportToSpawn()
-wait(6)
 TravelToDressrosa()
 wait(2)
-movePlayer(startPosition, 8)
+TeleportToSpawn()
+wait(6)
+movePlayer(startPosition, 10)
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
 
