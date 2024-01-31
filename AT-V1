@@ -55,7 +55,7 @@ wait(1)
 TravelToDressrosa()
 wait(1)
 
-movePlayer(startPosition, 8)
+movePlayer(startPosition, 10)
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
 
