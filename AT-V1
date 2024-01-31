@@ -3,11 +3,8 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
 
 local function TeleportToSpawn()
-    -- Gọi server để xác định vị trí spawn
     local spawnLocation = replicatedStorage.Remotes.CommF_:InvokeServer("GetSpawnLocation")
-
     if spawnLocation then
-        -- Chuyển đến vị trí spawn
         player.Character:SetPrimaryPartCFrame(spawnLocation)
     else
         warn("Failed to get spawn location from server.")
@@ -20,7 +17,6 @@ end
 
 local function movePlayer(destination, duration)
     local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
     if humanoidRootPart then
         local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
         local tweenGoal = { CFrame = destination }
@@ -63,13 +59,11 @@ local function UnequipTools()
     end
 end
 
--- Đặt team trước
 SetTeam("Pirates")
 wait(2)
 TravelToDressrosa()
 wait(2)
 
--- Teleport sau khi đặt team
 TeleportToSpawn()
 wait(6)
 movePlayer(startPosition, 8)
