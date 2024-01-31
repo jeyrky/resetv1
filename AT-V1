@@ -2,12 +2,20 @@ local player = game.Players.LocalPlayer
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
 
-local function SetTeam(teamName)
-    replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
+local function TeleportToSpawn()
+    -- Gọi server để xác định vị trí spawn
+    local spawnLocation = replicatedStorage.Remotes.CommF_:InvokeServer("GetSpawnLocation")
+
+    if spawnLocation then
+        -- Chuyển đến vị trí spawn
+        player.Character:SetPrimaryPartCFrame(spawnLocation)
+    else
+        warn("Failed to get spawn location from server.")
+    end
 end
 
-local function TeleportToSpawn()
-    replicatedStorage.Remotes.CommF_:InvokeServer("TeleportToSpawn")
+local function SetTeam(teamName)
+    replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
 
 local function movePlayer(destination, duration)
@@ -65,7 +73,7 @@ TravelToDressrosa()
 wait(2)
 TeleportToSpawn()
 wait(5)
-movePlayer(startPosition, 8)
+movePlayer(startPosition, 10)
 
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("SetSpawnPoint")
 
