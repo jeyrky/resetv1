@@ -2,15 +2,6 @@ local player = game.Players.LocalPlayer
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
 
-local function TeleportToSpawn()
-    local spawnLocation = replicatedStorage.Remotes.CommF_:InvokeServer("GetSpawnLocation")
-    if spawnLocation then
-        player.Character:SetPrimaryPartCFrame(spawnLocation)
-    else
-        warn("Failed to get spawn location from server.")
-    end
-end
-
 local function SetTeam(teamName)
     replicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
@@ -64,7 +55,11 @@ wait(2)
 TravelToDressrosa()
 wait(2)
 
-TeleportToSpawn()
+local argsTeleportSpawn = {
+    [1] = "TeleportToSpawn"
+}
+rs.Remotes.CommF_:InvokeServer(unpack(argsTeleportSpawn))
+
 wait(6)
 movePlayer(startPosition, 8)
 
