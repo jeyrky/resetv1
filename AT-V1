@@ -50,10 +50,15 @@ local function UnequipTools()
     end
 end
 
+-- Đặt team trước
 SetTeam("Pirates")
-wait(1)
+
+-- Chờ một khoảng thời gian để đảm bảo set team hoàn thành trước khi tiếp tục
+wait(2)
+
 TravelToDressrosa()
-wait(1)
+wait(2)
+
 local args = {
     [1] = "TeleportToSpawn"
 }
